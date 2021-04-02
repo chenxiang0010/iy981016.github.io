@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        #box {
+            width: 100px;
+            height: 100px;
+            background: darkred;
+            color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+
+</div>
+<script type="text/javascript">
+    let box = document.querySelector("#box")
+
+    box.addEventListener('touchstart',function (e) {
+        this.size1 = e.touches[0].clientX
+        this.size2 = box.offsetLeft
+        this.size1Y = e.touches[0].clientY
+        this.size2Y = box.offsetTop
+    });
+
+    box.addEventListener('touchmove',function (e) {
+        this.size3 = e.touches[0].clientX
+        let size4 = this.size3 - (this.size1 - this.size2)
+        this.size3Y = e.touches[0].clientY
+        let size4Y = this.size3Y - (this.size1Y - this.size2Y)
+
+
+        let maxLeft = document.documentElement.clientWidth - box.offsetWidth;
+        let maxTop = document.documentElement.clientHeight - box.offsetHeight;
+        if (size4 <= 0){
+            size4 = 0
+        }
+        if (size4Y <= 0){
+            size4Y = 0
+        }
+        if (size4 >= maxLeft){
+            size4 = maxLeft
+        }
+        if (size4Y >= maxTop){
+            size4Y = maxTop
+        }
+
+
+        box.style.left = size4 + 'px'
+        box.style.top = size4Y + 'px'
+    });
+
+    box.addEventListener('touchend',function (e) {
+        box.style.left = 0
+        box.style.top = 0
+    });
+
+    document.body.addEventListener('touchstart', function(e){
+        e.preventDefault();
+    },{
+        passive: false
+    });
+</script>
+</body>
+</html>
